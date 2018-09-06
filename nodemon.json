@@ -1,0 +1,10 @@
+{
+  "verbose": true,
+  "ignore": [
+    "dist/",
+    "views/"
+  ],
+  "execMap": {
+    "js": "node"
+  }
+}
