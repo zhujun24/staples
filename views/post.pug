@@ -1,0 +1,15 @@
+extends public
+block append style
+  each css in styleList
+    link(rel='stylesheet', href=css)
+
+block append main
+  h1=post.title
+  p=post.content
+  div#root
+
+block append script
+  script.
+    var __ENV__ = '#{ENV}'
+  each js in scriptList
+    script(src=js)

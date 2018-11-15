@@ -1,17 +1,18 @@
+import { DATABASE } from '../config'
 import Crud from './crud'
 
-let TestDB
+let BlogDB
 
 let dbInit = async () => {
-  [TestDB] = await Promise.all([
+  [BlogDB] = await Promise.all([
     Crud.get({
       host: '',
-      db: 'test'
+      db: DATABASE
     })
   ])
 }
 
 export {
   dbInit,
-  TestDB
+  BlogDB
 }

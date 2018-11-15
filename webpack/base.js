@@ -20,15 +20,15 @@ var cssLoaders = [
 ]
 
 var generateConfig = function (dev) {
+  let plugins = dev ? [new webpack.HotModuleReplacementPlugin()] : []
   return {
-    plugins: [
-      new webpack.HotModuleReplacementPlugin(),
+    plugins: plugins.concat([
       new ExtractTextPlugin({
-        filename: 'index.css',
+        filename: '[name].[md5:contenthash:hex:8].css',
         allChunks: false,
         disable: false
       })
-    ],
+    ]),
     module: {
       rules: [
         {
@@ -38,7 +38,7 @@ var generateConfig = function (dev) {
             loader: 'babel-loader',
             query: {
               presets: [['env']],
-              plugins: ['syntax-dynamic-import']
+              plugins: ['syntax-dynamic-import', ['import', { libraryName: 'antd', style: true }]]
             }
           }
         },
@@ -66,13 +66,13 @@ var generateConfig = function (dev) {
       extensions: ['.js', '.jsx'],
       modules: ['node_modules'],
       alias: {
-        actions: path.join(__dirname, '../views/actions'),
-        components: path.join(__dirname, '../views/components'),
-        constants: path.join(__dirname, '../views/constants'),
-        containers: path.join(__dirname, '../views/containers'),
-        reducers: path.join(__dirname, '../views/reducers'),
-        services: path.join(__dirname, '../views/services'),
-        utils: path.join(__dirname, '../views/utils')
+        actions: path.join(__dirname, '../public/actions'),
+        components: path.join(__dirname, '../public/components'),
+        constants: path.join(__dirname, '../public/constants'),
+        containers: path.join(__dirname, '../public/containers'),
+        reducers: path.join(__dirname, '../public/reducers'),
+        services: path.join(__dirname, '../public/services'),
+        utils: path.join(__dirname, '../public/utils')
       }
     },
     externals: {

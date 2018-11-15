@@ -1,3 +1,5 @@
 export default async (ctx) => {
-  ctx.body = 'OK'
+  ctx.body = {
+    tm: Date.now()
+  }
 }

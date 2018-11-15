@@ -16,6 +16,9 @@
     "test"
   ],
   "standard": {
+    "globals": [
+      "fetch"
+    ],
     "ignore": [
       "test/",
       "dist/"
@@ -49,22 +52,29 @@
     "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
+    "generate-password": "^1.4.1",
+    "jsonwebtoken": "^8.4.0",
     "koa": "^2.5.2",
     "koa-bodyparser": "^4.2.1",
+    "koa-cookie": "^1.0.0",
     "koa-json": "^2.0.2",
+    "koa-pug": "^3.0.0-2",
     "koa-router": "^7.4.0",
     "koa-static": "^5.0.0",
     "koa-webpack": "^5.1.0",
     "lodash": "^4.17.10",
     "log4js": "^3.0.5",
+    "moment": "^2.22.2",
     "mongodb": "^3.1.1",
-    "request": "^2.87.0"
+    "request": "^2.88.0"
   },
   "devDependencies": {
+    "antd": "^3.10.7",
     "assert": "^1.4.1",
     "autoprefixer": "^9.1.5",
     "babel-core": "^6.26.3",
     "babel-loader": "^7.1.5",
+    "babel-plugin-import": "^1.9.1",
     "core-js": "^2.5.7",
     "css-loader": "^1.0.0",
     "cssnano": "^4.1.0",
@@ -72,7 +82,7 @@
     "file-loader": "^2.0.0",
     "history": "^4.7.2",
     "isomorphic-fetch": "^2.2.1",
-    "less": "^3.8.1",
+    "less": "^2.7.3",
     "less-loader": "^4.1.0",
     "mocha": "^5.2.0",
     "nodemon": "^1.18.3",
@@ -91,7 +101,7 @@
     "url-loader": "^1.1.1",
     "webpack": "^4.17.1",
     "webpack-cli": "^3.1.0",
-    "webpack-dev-middleware": "^3.2.0",
-    "webpack-hot-middleware": "^2.22.3"
+    "webpack-dev-middleware": "^3.4.0",
+    "webpack-hot-middleware": "^2.7.1"
   }
 }
