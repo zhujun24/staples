@@ -38,8 +38,8 @@ app.use(KoaStatic(path.join(__dirname, './static')))
 // config webpack-dev in develop env
 if (ENV === 'DEV') {
   const webpack = require('webpack')
-  const devMiddleware = require('./middleware/devMiddleware')
-  const hotMiddleware = require('./middleware/hotMiddleware')
+  const devMiddleware = require('koa-webpack-dev-middleware')
+  const hotMiddleware = require('koa-webpack-hot-middleware')
   const webpackConfig = require('./webpack/webpack.dev')
   const webpacker = webpack(webpackConfig)
   app.use(devMiddleware(webpacker, {
