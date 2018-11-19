@@ -37,7 +37,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
     }
 
     componentDidMount () {
-      fetch('/api/islogin', {
+      fetch(`/api/${window.ADMIN_PATH}/islogin`, {
         credentials: 'include'
       }).then(res => res.json()).then(res => {
         this.setState({
@@ -69,8 +69,8 @@ ReactDOM.render(
   <ReactRedux.Provider store={store}>
     <ConnectedRouter history={history} forceRefresh>
       <div>
-        <Route exact path='/admin' component={PrivateRoute({ component: Containers.dashboard })} />
-        <Route path='/admin/login' component={Containers.login} />
+        <Route exact path={`/${window.ADMIN_PATH}`} component={PrivateRoute({ component: Containers.dashboard })} />
+        <Route path={`/${window.ADMIN_PATH}/login`} component={Containers.login} />
       </div>
     </ConnectedRouter>
   </ReactRedux.Provider>,

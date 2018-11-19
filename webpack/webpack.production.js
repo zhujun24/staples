@@ -10,7 +10,6 @@ module.exports = Object.assign({
   output: {
     path: path.resolve(__dirname, '../dist'),
     publicPath: '/',
-    filename: '[name].[contenthash:8].js',
-    chunkFilename: '[name].[contenthash:8].js'
+    filename: '[name].[contenthash:8].js'
   }
 }, baseConfig.production)

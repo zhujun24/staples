@@ -10,10 +10,10 @@ const postApiHandler = {
     }
   },
   POST: async (ctx) => {
-    const { link, title, content } = ctx.request.body
-    if (!link || !title || !content) {
+    const { link, title, html, raw } = ctx.request.body
+    if (!link || !title || !html || !raw) {
       return {
-        error: 'invalid content'
+        error: 'invalid params'
       }
     }
     const tm = new Date()
@@ -38,7 +38,8 @@ const postApiHandler = {
         month,
         link,
         title,
-        content
+        html,
+        raw
       },
       collection: 'post'
     })

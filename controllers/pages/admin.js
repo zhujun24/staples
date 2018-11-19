@@ -1,6 +1,6 @@
 import _ from 'lodash'
 import { decodeToken } from '../../utils'
-import { PUBLIC_CDN, HOST, ENV } from '../../config'
+import { PUBLIC_CDN, ADMIN_PATH, HOST, ENV } from '../../config'
 
 const css = [
   'admin.css'
@@ -32,7 +32,7 @@ export default async (ctx, next) => {
       description: 'description',
       keywords: 'keywords'
     },
-    ENV,
+    ADMIN_PATH,
     styleList: generateCss(),
     scriptList: generateJs()
   }, true)

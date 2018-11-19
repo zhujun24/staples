@@ -9,9 +9,7 @@ module.exports = Object.assign({
   },
   output: {
     path: path.resolve(__dirname, '../dist'),
-    libraryTarget: 'umd',
-    publicPath: '/assets',
-    filename: '[name].js',
-    chunkFilename: '[name].js'
+    publicPath: '/assets/',
+    filename: '[name].js'
   }
 }, baseConfig.development)

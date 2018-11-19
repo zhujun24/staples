@@ -19,7 +19,7 @@ class AdminDashBoard extends Component {
     e.preventDefault()
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        fetch('/api/login', {
+        fetch(`/api/${window.ADMIN_PATH}/login`, {
           method: 'POST',
           credentials: 'include',
           headers: {

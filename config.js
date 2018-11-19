@@ -1,11 +1,13 @@
 import process from 'process'
 
-const ENV = process.env.NODE_ENV === 'prod' ? 'PROD' : 'DEV'
+const PRODUCTION = 'prod'
+const ENV = process.env.NODE_ENV === PRODUCTION ? 'PROD' : 'DEV'
 
 const HOST = 'www.domain.com'
 const PORT = 3000
 const PASSWORD = '123456'
 const DATABASE = 'blog'
+const ADMIN_PATH = 'admin'
 
 const PUBLIC_CDN = {
   DEV: {
@@ -48,5 +50,6 @@ export {
   PORT,
   PASSWORD,
   DATABASE,
+  ADMIN_PATH,
   ENV
 }

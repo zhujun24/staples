@@ -8,6 +8,6 @@ block append main
 
 block append script
   script.
-    var __ENV__ = '#{ENV}'
+    var ADMIN_PATH = '#{ADMIN_PATH}'
   each js in scriptList
     script(src=js)

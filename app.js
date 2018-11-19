@@ -7,8 +7,9 @@ import cookie from 'koa-cookie'
 import bodyParser from 'koa-bodyparser'
 import json from 'koa-json'
 import Pug from 'koa-pug'
-import { ENV, PORT } from './config'
+import { ADMIN_PATH, ENV, PORT } from './config'
 import timer from './middleware/timer'
+import auth from './middleware/auth'
 import { BlogDB, dbInit } from './database/dbInit'
 import { dashboardCtl, postCtl, aboutCtl, notfoundCtl, adminCtl } from './controllers/pages'
 import { postApiCtl, loginCtl, logoutCtl, isLoginCtl } from './controllers/apis'
@@ -66,21 +67,31 @@ router.get('/health', health)
 // blog page
 router.get('/', dashboardCtl)
 router.get('/about', aboutCtl)
+router.get('/archive', postCtl)
+router.get('/tag/:tag', postCtl)
+router.get('/type/:type', postCtl)
 router.get('/post/:year/:month/:link', postCtl)
 
+// blog api
+router.get('/api/archive', postCtl)
+router.get('/api/tag/:tag', postCtl)
+router.get('/api/type/:tag', postCtl)
+
 // admin page
-router.get('/admin', adminCtl)
-router.get('/admin/login', adminCtl)
+router.get(`/${ADMIN_PATH}`, adminCtl)
+router.get(`/${ADMIN_PATH}/login`, adminCtl)
 
-// api
-router.get('/api/post/:year/:month/:link', postApiCtl)
-router.post('/api/post', postApiCtl)
-router.put('/api/post', postApiCtl)
-router.delete('/api/post', postApiCtl)
+// admin api
+router.get(`/api/${ADMIN_PATH}/post/:year/:month/:link`, auth, postApiCtl)
+router.post(`/api/${ADMIN_PATH}/post`, auth, postApiCtl)
+router.put(`/api/${ADMIN_PATH}/post/:year/:month/:link`, auth, postApiCtl)
+router.delete(`/api/${ADMIN_PATH}/post/:year/:month/:link`, auth, postApiCtl)
+router.get(`/api/${ADMIN_PATH}/type`, auth, postApiCtl)
+router.post(`/api/${ADMIN_PATH}/type`, auth, postApiCtl)
 
-router.post('/api/login', loginCtl)
-router.get('/api/logout', logoutCtl)
-router.get('/api/islogin', isLoginCtl)
+router.post(`/api/${ADMIN_PATH}/login`, loginCtl)
+router.get(`/api/${ADMIN_PATH}/logout`, logoutCtl)
+router.get(`/api/${ADMIN_PATH}/islogin`, isLoginCtl)
 
 // 404 page
 router.all('*', notfoundCtl)
