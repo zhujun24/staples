@@ -12,7 +12,7 @@ import timer from './middleware/timer'
 import auth from './middleware/auth'
 import { BlogDB, dbInit } from './database/dbInit'
 import { dashboardCtl, postCtl, aboutCtl, notfoundCtl, adminCtl } from './controllers/pages'
-import { postApiCtl, loginCtl, logoutCtl, isLoginCtl } from './controllers/apis'
+import { postApiCtl, loginCtl, logoutCtl, isLoginCtl, uploadCtl } from './controllers/apis'
 import health from './controllers/health'
 
 const app = new Koa()
@@ -92,6 +92,9 @@ router.post(`/api/${ADMIN_PATH}/type`, auth, postApiCtl)
 router.post(`/api/${ADMIN_PATH}/login`, loginCtl)
 router.get(`/api/${ADMIN_PATH}/logout`, logoutCtl)
 router.get(`/api/${ADMIN_PATH}/islogin`, isLoginCtl)
+
+router.options(`/api/${ADMIN_PATH}/upload`, auth, uploadCtl)
+router.post(`/api/${ADMIN_PATH}/upload`, auth, uploadCtl)
 
 // 404 page
 router.all('*', notfoundCtl)
