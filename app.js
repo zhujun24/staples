@@ -12,7 +12,7 @@ import timer from './middleware/timer'
 import auth from './middleware/auth'
 import { BlogDB, dbInit } from './database/dbInit'
 import { dashboardCtl, postCtl, aboutCtl, notfoundCtl, adminCtl } from './controllers/pages'
-import { postApiCtl, loginCtl, logoutCtl, isLoginCtl, uploadCtl } from './controllers/apis'
+import { tagCtl, typeCtl, postApiCtl, loginCtl, logoutCtl, isLoginCtl, uploadCtl } from './controllers/apis'
 import health from './controllers/health'
 
 const app = new Koa()
@@ -82,12 +82,14 @@ router.get(`/${ADMIN_PATH}`, adminCtl)
 router.get(`/${ADMIN_PATH}/login`, adminCtl)
 
 // admin api
-router.get(`/api/${ADMIN_PATH}/post/:year/:month/:link`, auth, postApiCtl)
+router.get(`/api/${ADMIN_PATH}/post`, auth, postApiCtl)
 router.post(`/api/${ADMIN_PATH}/post`, auth, postApiCtl)
 router.put(`/api/${ADMIN_PATH}/post/:year/:month/:link`, auth, postApiCtl)
 router.delete(`/api/${ADMIN_PATH}/post/:year/:month/:link`, auth, postApiCtl)
-router.get(`/api/${ADMIN_PATH}/type`, auth, postApiCtl)
-router.post(`/api/${ADMIN_PATH}/type`, auth, postApiCtl)
+router.get(`/api/${ADMIN_PATH}/types`, auth, typeCtl)
+router.post(`/api/${ADMIN_PATH}/type`, auth, typeCtl)
+router.get(`/api/${ADMIN_PATH}/tags`, auth, tagCtl)
+router.post(`/api/${ADMIN_PATH}/tag`, auth, tagCtl)
 
 router.post(`/api/${ADMIN_PATH}/login`, loginCtl)
 router.get(`/api/${ADMIN_PATH}/logout`, logoutCtl)

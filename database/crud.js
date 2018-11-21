@@ -4,8 +4,8 @@ import logger from '../utils/logger'
 
 const initDoc = (doc) => {
   let now = Date.now()
-  doc.insert_time = now
-  doc.modify_time = now
+  doc._create_time = now
+  doc._modify_time = now
 }
 
 export default class Crud {
@@ -91,10 +91,10 @@ export default class Crud {
     if (_.some(_.keys(docs), v => v.match(/^\$/))) {
       // 如果是$set, $pushAll, $unset等类型的
       docs.$set = docs.$set || {}
-      docs.$set.modify_time = Date.now()
+      docs.$set._modify_time = Date.now()
     } else {
       // 否则传的是整个文档
-      docs.modify_time = Date.now()
+      docs._modify_time = Date.now()
     }
     let result = await collection.findAndModify(query, [
       ['_id', 1]
@@ -114,7 +114,7 @@ export default class Crud {
     // 批量更新
     options.multi = true
     docs.$set = docs.$set || {}
-    docs.$set.modify_time = Date.now()
+    docs.$set._modify_time = Date.now()
     logger.info(`updates in collection ${opt.collection} by query ${JSON.stringify(query).slice(0, 200)}`)
     let result = await collection.update(query, docs, options)
     return result
