@@ -120,7 +120,7 @@ export default class Crud {
     return result
   }
 
-  async del (opt) {
+  async remove (opt) {
     let query = opt.query || {}
     let collection = this.mongo.collection(opt.collection)
     let result = await collection.remove(query)

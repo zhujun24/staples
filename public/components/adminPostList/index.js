@@ -1,9 +1,11 @@
 import 'isomorphic-fetch'
 import querystring from 'querystring'
 import React, { Component } from 'react'
-import { Table, Divider, Tag } from 'antd'
+import { Modal, Table, Divider, Tag, message } from 'antd'
 import { PAGESIZE_OPTIONS } from '../../constants'
 import './index.less'
+
+const confirm = Modal.confirm
 
 class PostList extends Component {
   constructor (props) {
@@ -17,6 +19,7 @@ class PostList extends Component {
     this.paginationChange = this.paginationChange.bind(this)
     this.paginationSizeChange = this.paginationSizeChange.bind(this)
     this.goToEdit = this.goToEdit.bind(this)
+    this.goToDelete = this.goToDelete.bind(this)
 
     this.columns = [{
       title: '标题',
@@ -59,11 +62,11 @@ class PostList extends Component {
       title: 'Action',
       align: 'center',
       key: 'action',
-      render: (text, record) => (
+      render: (text, record, index) => (
         <span>
           <a href='javascript:;' onClick={() => this.goToEdit(record)}>编辑</a>
           <Divider type='vertical' />
-          <a href='javascript:;'>删除</a>
+          <a href='javascript:;' onClick={() => this.goToDelete(record, index)}>删除</a>
         </span>
       )
     }]
@@ -75,6 +78,32 @@ class PostList extends Component {
 
   goToEdit (post) {
     this.props.goToEdit && this.props.goToEdit(post)
+  }
+
+  goToDelete (post, index) {
+    const self = this
+    confirm({
+      title: `确认删除 ${post.title}?`,
+      onOk () {
+        fetch(`/api/${window.ADMIN_PATH}/post`, {
+          method: 'DELETE',
+          credentials: 'include',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(post)
+        }).then(res => res.json()).then(res => {
+          if (res && res.data) {
+            message.success('删除成功!')
+            let { post } = self.state
+            post.splice(index, 1)
+            self.setState({ post })
+          } else {
+            message.error('删除失败请重试!')
+          }
+        })
+      }
+    })
   }
 
   loadData () {

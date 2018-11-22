@@ -79,14 +79,20 @@ const extendControls = [
 class Editor extends Component {
   constructor (props) {
     super(props)
+    const editPost = props.editPost
     this.state = {
       tags: [],
       types: [],
-      editPost: props.editPost,
-      content: BraftEditor.createEditorState(null)
+      editPost: editPost || {},
+      isEdit: !!editPost,
+      content: BraftEditor.createEditorState(editPost && editPost.html ? editPost.html : null)
     }
     this.submit = this.submit.bind(this)
     this.handleEditorChange = this.handleEditorChange.bind(this)
+  }
+
+  componentWillRevieveProps (a) {
+    console.log(a)
   }
 
   componentDidMount () {
@@ -103,23 +109,24 @@ class Editor extends Component {
   }
 
   submit (e) {
-    const { content } = this.state
+    const { content, editPost, isEdit } = this.state
     e.preventDefault()
-    this.props.form.validateFields((err, values) => {
+    this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         const html = content.toHTML()
         if (striptags(html).trim()) {
           fetch(`/api/${window.ADMIN_PATH}/post`, {
-            method: 'POST',
+            method: isEdit ? 'PUT' : 'POST',
             credentials: 'include',
             headers: {
               'Content-Type': 'application/json'
             },
-            body: JSON.stringify(Object.assign({
+            body: JSON.stringify(Object.assign({}, editPost, {
               html,
               raw: content.toRAW()
             }, values))
           }).then(res => res.json()).then(res => {
+            this.props.editSubmit && this.props.editSubmit(isEdit)
           }).catch(() => {
             message.error('提交失败请重试!')
           })
@@ -135,8 +142,8 @@ class Editor extends Component {
   }
 
   render () {
-    console.log(this.state.editPost)
-    const { tags, types, content } = this.state
+    const { tags, types, content, editPost = {}, isEdit } = this.state
+    const { link, title, type, tag, open } = editPost
     const { getFieldDecorator } = this.props.form
     const tm = new Date()
     const urlPrefix = `${window.location.protocol}//${window.location.host}/post/${tm.getFullYear()}/${tm.getMonth() + 1}/`
@@ -145,6 +152,7 @@ class Editor extends Component {
         <Form>
           <FormItem label='标题' {...formItemLayout}>
             {getFieldDecorator('title', {
+              initialValue: title,
               rules: [{ required: true, message: '请输入文章标题' }]
             })(
               <Input size='large' addonBefore='标题' placeholder='我是博客的标题' />
@@ -152,6 +160,7 @@ class Editor extends Component {
           </FormItem>
           <FormItem label='自定义链接' {...formItemLayout}>
             {getFieldDecorator('link', {
+              initialValue: link,
               rules: [{ required: true, pattern: /^[a-zA-Z\d\-_]+$/g, message: '请输入合法的文章链接，由英文、数字、-、_组成' }]
             })(
               <Input addonBefore={urlPrefix} placeholder='文章链接，由英文、数字、-、_组成' />
@@ -159,6 +168,7 @@ class Editor extends Component {
           </FormItem>
           <FormItem label='类别' {...formItemLayout}>
             {getFieldDecorator('type', {
+              initialValue: type,
               rules: [{ required: true, message: '请选择文章类别' }]
             })(
               <Select placeholder='类别'>
@@ -169,7 +179,9 @@ class Editor extends Component {
             )}
           </FormItem>
           <FormItem label='标签(可选)' {...formItemLayout}>
-            {getFieldDecorator('tag')(
+            {getFieldDecorator('tag', {
+              initialValue: tag
+            })(
               <Select mode='tags' placeholder='标签'>
                 {
                   tags.map(tag => <Option key={tag}>{tag}</Option>)
@@ -178,12 +190,14 @@ class Editor extends Component {
             )}
           </FormItem>
           <FormItem label='公开' {...formItemLayout}>
-            {getFieldDecorator('open')(
+            {getFieldDecorator('open', {
+              initialValue: open
+            })(
               <Switch defaultChecked />
             )}
           </FormItem>
         </Form>
-        <Button onClick={this.submit}>提交</Button>
+        <Button onClick={this.submit}>{isEdit ? '发布修改' : '发布'}</Button>
         <BraftEditor
           controls={controls}
           extendControls={extendControls}
